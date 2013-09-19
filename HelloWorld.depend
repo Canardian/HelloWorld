@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1353754656 source:d:\github\helloworld\main.cpp
+	<GL/glfw.h>
+
+1334842229 d:\lib\glfw\include\gl\glfw.h
+	<OpenGL/gl3.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL3/gl3.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
