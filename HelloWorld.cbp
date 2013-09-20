@@ -25,6 +25,7 @@
 			<Add directory="glfw-3.0.2/include" />
 		</Compiler>
 		<Linker>
+			<Add option="-static" />
 			<Add library="glfw3" />
 			<Add library="opengl32" />
 			<Add library="glu32" />
