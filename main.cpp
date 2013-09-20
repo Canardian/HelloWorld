@@ -1,66 +1,53 @@
-#include <GL/glfw.h>
+#include <GLFW/glfw3.h>
 
 int main()
 {
-    int     width, height;
+    GLFWwindow* window;
     int     frame = 0;
     bool    running = true;
 
     glfwInit();
 
-    if( !glfwOpenWindow( 512, 512, 0, 0, 0, 0, 0, 0, GLFW_WINDOW ) )
+	window = glfwCreateWindow( 512, 512, "GLFW Application", NULL, NULL);
+
+    if( !window )
     {
         glfwTerminate();
         return 0;
     }
-
-    glfwSetWindowTitle("GLFW Application");
-
+    glfwMakeContextCurrent(window);
     while(running)
     {
         frame++;
 
-        glfwGetWindowSize( &width, &height );
-        height = height > 0 ? height : 1;
+         float ratio;
+        int width, height;
 
-        glViewport( 0, 0, width, height );
+        glfwGetFramebufferSize(window, &width, &height);
+        ratio = width / (float) height;
 
-        glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-        glClear( GL_COLOR_BUFFER_BIT );
+        glViewport(0, 0, width, height);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        glMatrixMode( GL_PROJECTION );
+		glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective( 65.0f, (GLfloat)width/(GLfloat)height, 1.0f, 100.0f );
-
-        // Draw some rotating garbage
-        glMatrixMode( GL_MODELVIEW );
+        glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+        glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        gluLookAt(0.0f, -10.0f, 0.0f,
-                0.0f, 0.0f, 0.0f,
-                0.0f, 0.0f, 1.0f );
-
-        //glTranslatef( 1.0f, 1.0f, 0.0f );
-        glRotatef(frame, 0.25f, 1.0f, 0.75f);
-        glBegin( GL_TRIANGLES );
-          glColor3f(0.1f, 0.0f, 0.0f );
-          glVertex3f(0.0f, 3.0f, -4.0f);
-          glColor3f(0.0f, 1.0f, 0.0f );
-          glVertex3f(3.0f, -2.0f, -4.0f);
-          glColor3f(0.0f, 0.0f, 1.0f );
-          glVertex3f(-3.0f, -2.0f, -4.0f);
+        glRotatef((float) glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+        glBegin(GL_TRIANGLES);
+        glColor3f(1.f, 0.f, 0.f);
+        glVertex3f(-0.6f, -0.4f, 0.f);
+        glColor3f(0.f, 1.f, 0.f);
+        glVertex3f(0.6f, -0.4f, 0.f);
+        glColor3f(0.f, 0.f, 1.f);
+        glVertex3f(0.f, 0.6f, 0.f);
         glEnd();
-        glBegin( GL_TRIANGLES );
-          glColor3f(0.0f, 0.1f, 0.0f );
-          glVertex3f(0.0f, 3.0f, -3.0f);
-          glColor3f(0.0f, 0.0f, 1.0f );
-          glVertex3f(3.0f, -2.0f, -2.0f);
-          glColor3f(1.0f, 0.0f, 0.0f );
-          glVertex3f(-3.0f, -2.0f, 2.0f);
-        glEnd();
-        glfwSwapBuffers();
+        glfwSwapBuffers(window);
+        glfwPollEvents();
 
         // exit if ESC was pressed or window was closed
-        running = !glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam( GLFW_OPENED);
+        running = !glfwWindowShouldClose(window);
     }
 
     glfwTerminate();
